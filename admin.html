@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard - FreeLearn Hub
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1>⚙️ Admin Dashboard</h1>
+
+    <p>
+        Welcome, {{ session["user_name"] }}
+    </p>
+
+    <div class="course-grid">
+
+        <div class="course-card">
+
+            <h2>📚 {{ courses|length }}</h2>
+
+            <p>Total Courses</p>
+
+        </div>
+
+
+        <div class="course-card">
+
+            <h2>👥 {{ users|length }}</h2>
+
+            <p>Total Users</p>
+
+        </div>
+
+    </div>
+
+
+    <br>
+
+    <a
+        href="{{ url_for('add_course') }}"
+        class="btn"
+    >
+        ➕ Add New Course
+    </a>
+
+
+    <h2 style="margin-top:40px;">
+        📚 Course Management
+    </h2>
+
+
+    <div class="course-grid">
+
+        {% for course in courses %}
+
+        <div class="course-card">
+
+            <h3>
+                {{ course["name"] }}
+            </h3>
+
+            <p>
+                🏢 {{ course["provider"] }}
+            </p>
+
+            <p>
+                📚 {{ course["category"] }}
+            </p>
+
+            <p>
+                🎯 {{ course["level"] }}
+            </p>
+
+
+            <a
+                href="{{ url_for('delete_course', course_id=course['id']) }}"
+                class="btn"
+                onclick="return confirm('Are you sure you want to delete this course?');"
+            >
+                🗑️ Delete
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

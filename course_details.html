@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ course["name"] }} - FreeLearn Hub
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="section">
+
+        <div class="details">
+
+            <!-- Course Category -->
+
+            <span class="category">
+                {{ course["category"] }}
+            </span>
+
+
+            <!-- Course Name -->
+
+            <h1>
+                {{ course["name"] }}
+            </h1>
+
+
+            <!-- Provider -->
+
+            <h3>
+                🏢 {{ course["provider"] }}
+            </h3>
+
+
+            <!-- Course Information -->
+
+            <div class="course-info">
+
+                <p>
+                    📚 <b>Category:</b>
+                    {{ course["category"] }}
+                </p>
+
+                <p>
+                    ⏱ <b>Duration:</b>
+                    {{ course["duration"] }}
+                </p>
+
+                <p>
+                    🎯 <b>Level:</b>
+                    {{ course["level"] }}
+                </p>
+
+            </div>
+
+
+            <!-- Certificate -->
+
+            {% if course["certificate"] %}
+
+            <p class="certificate">
+                🏆 Certificate Available
+            </p>
+
+            {% else %}
+
+            <p>
+                📜 Certificate information is available on the provider website.
+            </p>
+
+            {% endif %}
+
+
+            <!-- Description -->
+
+            <h2>
+                About this course
+            </h2>
+
+            <p>
+                {{ course["description"] }}
+            </p>
+
+
+            <!-- Buttons -->
+
+            <div class="buttons">
+
+                <!-- Start Course -->
+
+                <a
+                    href="{{ course['link'] }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn"
+                >
+                    🚀 Start Course
+                </a>
+
+
+                <!-- Save Course -->
+
+                {% if session.get("user_id") %}
+
+                <a
+                    href="{{ url_for('save_course', course_id=course['id']) }}"
+                    class="btn"
+                >
+                    ❤️ Save Course
+                </a>
+
+                {% else %}
+
+                <a
+                    href="{{ url_for('login') }}"
+                    class="btn"
+                >
+                    🔐 Login to Save
+                </a>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Note -->
+
+            <p class="note">
+
+                💡 Clicking "Start Course" will open the
+                course provider's website in a new tab.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}
+Courses - FreeLearn Hub
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="section">
+
+        <h1 class="section-title">
+            Explore Free Courses 🎓
+        </h1>
+
+        <p style="text-align:center; margin-bottom:30px;">
+            Find free learning opportunities from different providers.
+        </p>
+
+
+        <!-- SEARCH & FILTER -->
+
+        <form
+            method="GET"
+            action="/courses"
+            class="filter-box"
+        >
+
+            <!-- Search -->
+
+            <input
+                type="text"
+                id="searchInput"
+                name="search"
+                placeholder="🔍 Search courses..."
+                value="{{ request.args.get('search','') }}"
+            >
+
+
+            <!-- Category -->
+
+            <select name="category">
+
+                <option value="">
+                    All Categories
+                </option>
+
+                {% for item in categories %}
+
+                <option
+                    value="{{ item['category'] }}"
+                    {% if request.args.get('category') == item['category'] %}
+                    selected
+                    {% endif %}
+                >
+
+                    {{ item['category'] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <!-- Provider -->
+
+            <select name="provider">
+
+                <option value="">
+                    All Providers
+                </option>
+
+                {% for item in providers %}
+
+                <option
+                    value="{{ item['provider'] }}"
+                    {% if request.args.get('provider') == item['provider'] %}
+                    selected
+                    {% endif %}
+                >
+
+                    {{ item['provider'] }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <!-- Certificate -->
+
+            <select name="certificate">
+
+                <option value="">
+                    All Courses
+                </option>
+
+                <option
+                    value="yes"
+                    {% if request.args.get('certificate') == 'yes' %}
+                    selected
+                    {% endif %}
+                >
+
+                    🏆 Certificate Available
+
+                </option>
+
+            </select>
+
+
+            <button
+                type="submit"
+                class="btn"
+            >
+                Filter
+            </button>
+
+
+            <button
+                type="button"
+                id="clearSearch"
+                class="btn"
+                onclick="window.location.href='/courses'"
+            >
+                Clear
+            </button>
+
+        </form>
+
+
+        <!-- COURSE COUNT -->
+
+        <p style="margin:20px 0; font-weight:bold;">
+
+            {{ courses|length }} course(s) found
+
+        </p>
+
+
+        <!-- COURSE CARDS -->
+
+        <div class="course-grid">
+
+            {% for course in courses %}
+
+            <div class="course-card">
+
+
+                <!-- COURSE IMAGE -->
+
+                {% if course["image"] %}
+
+                <img
+                    src="{{ url_for('static', filename='uploads/' + course['image']) }}"
+                    alt="{{ course['name'] }}"
+                    class="course-image"
+                >
+
+                {% else %}
+
+                <div class="no-image">
+                    📚
+                </div>
+
+                {% endif %}
+
+
+                <!-- CATEGORY -->
+
+                <span class="category">
+
+                    {{ course["category"] }}
+
+                </span>
+
+
+                <!-- COURSE NAME -->
+
+                <h3>
+
+                    {{ course["name"] }}
+
+                </h3>
+
+
+                <!-- PROVIDER -->
+
+                <p>
+
+                    🏢 Provider:
+
+                    <b class="provider">
+
+                        {{ course["provider"] }}
+
+                    </b>
+
+                </p>
+
+
+                <!-- LEVEL -->
+
+                <p>
+
+                    📊 Level:
+
+                    {{ course["level"] }}
+
+                </p>
+
+
+                <!-- DURATION -->
+
+                <p>
+
+                    ⏱ Duration:
+
+                    {{ course["duration"] }}
+
+                </p>
+
+
+                <!-- CERTIFICATE -->
+
+                {% if course["certificate"] %}
+
+                <p class="certificate">
+
+                    🏆 Certificate Available
+
+                </p>
+
+                {% else %}
+
+                <p>
+
+                    📜 Certificate: Check provider
+
+                </p>
+
+                {% endif %}
+
+
+                <!-- DESCRIPTION -->
+
+                <p>
+
+                    {{ course["description"] }}
+
+                </p>
+
+
+                <!-- VIEW DETAILS -->
+
+                <a
+                    href="{{ url_for('course_details', course_id=course['id']) }}"
+                    class="btn"
+                >
+
+                    View Details →
+
+                </a>
+
+
+            </div>
+
+
+            {% else %}
+
+            <div
+                style="text-align:center; width:100%;"
+            >
+
+                <h3>
+
+                    😔 No courses found
+
+                </h3>
+
+                <p>
+
+                    Try another search or category.
+
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
