@@ -28,6 +28,9 @@ app = Flask(__name__)
 
 app.secret_key = "freelearn_secret_key"
 
+# Create database tables when Flask starts
+create_tables()
+
 
 # =========================================
 # IMAGE UPLOAD SETTINGS
@@ -806,8 +809,6 @@ def delete_course(course_id):
 # =========================================
 
 if __name__ == "__main__":
-
-    create_tables()
 
     app.run(
         debug=True
